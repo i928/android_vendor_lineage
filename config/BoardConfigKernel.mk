@@ -18,6 +18,8 @@
 #
 # These config vars are usually set in BoardConfig.mk:
 #
+#   TARGET_KERNEL_HEADERS_SOURCE       = Kernel source dir for the userspace UAPI headers,
+#                                          optional, defaults to TARGET_KERNEL_SOURCE
 #   TARGET_KERNEL_SOURCE               = Kernel source dir, optional, defaults
 #                                          to kernel/$(TARGET_DEVICE_DIR)
 #   TARGET_KERNEL_ARCH                 = Kernel Arch
@@ -67,6 +69,10 @@ BUILD_TOP := $(abspath .)
 
 TARGET_AUTO_KDIR := $(shell echo $(TARGET_DEVICE_DIR) | sed -e 's/^device/kernel/g')
 TARGET_KERNEL_SOURCE ?= $(TARGET_AUTO_KDIR)
+# Kernel tree whose UAPI headers userspace is built against (generated_kernel_includes).
+# Defaults to the kernel source. A device whose vendor blobs and ported drivers keep an
+# older kernel's userspace ABI can point this at that older tree.
+TARGET_KERNEL_HEADERS_SOURCE ?= $(TARGET_KERNEL_SOURCE)
 
 TARGET_KERNEL_ARCH := $(strip $(TARGET_KERNEL_ARCH))
 ifeq ($(TARGET_KERNEL_ARCH),)
